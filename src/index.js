@@ -15,6 +15,8 @@ configMiddleware(app)
 async function scheduleTimeman(webhook) {
   const bitrix = Bitrix(webhook)
 
+  const user = await bitrix.call('user.current')
+
   const clockInId = `clock-in ${webhook}`;
 
   agenda.define(clockInId, async () => {
@@ -45,15 +47,15 @@ async function scheduleTimeman(webhook) {
 
   await agenda.every("0 18 * * 1-5", clockOutId)
 
-  return {clockInId, clockOutId}
+  return user
 }
 
 app.post('/api/schedule', async (req, res) => {
   const {webhook} = req.body
 
-  await scheduleTimeman(webhook)
+  const user = await scheduleTimeman(webhook)
 
-  res.status(200).json('schedule success ' + webhook)
+  res.status(200).json(user)
 })
 
 app.listen(constants.PORT, () => console.log(`Timeman wake up on port ${constants.PORT} 🕰`))
