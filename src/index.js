@@ -53,9 +53,7 @@ app.post('/api/schedule', async (req, res) => {
 
   await scheduleTimeman(webhook)
 
-  console.log('schedule success ' + webhook)
-
-  res.status(200).json(agendaId)
+  res.status(200).json('schedule success ' + webhook)
 })
 
 app.listen(constants.PORT, () => console.log(`Timeman wake up on port ${constants.PORT} 🕰`))
