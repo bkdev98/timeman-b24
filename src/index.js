@@ -50,6 +50,12 @@ async function scheduleTimeman(webhook) {
   return user
 }
 
+async function cancelTimeman(webhook) {
+  const a = await agenda.cancel({ name: `clock-in ${webhook}` });
+  const b = await agenda.cancel({ name: `clock-out ${webhook}` });
+  return a + b;
+}
+
 app.get('/', (req, res) => {
   return res.status(200).json("Timeman 🕰")
 })
@@ -60,6 +66,14 @@ app.post('/api/schedule', async (req, res) => {
   const user = await scheduleTimeman(webhook)
 
   return res.status(200).json(user)
+})
+
+app.post('/api/cancel', async (req, res) => {
+  const {webhook} = req.body
+
+  const count = await cancelTimeman(webhook)
+
+  return res.status(200).json(count)
 })
 
 app.listen(constants.PORT, () => console.log(`Timeman wake up on port ${constants.PORT} 🕰`))
