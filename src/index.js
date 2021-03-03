@@ -50,12 +50,16 @@ async function scheduleTimeman(webhook) {
   return user
 }
 
+app.get('/', (req, res) => {
+  return res.status(200).json("Timeman 🕰")
+})
+
 app.post('/api/schedule', async (req, res) => {
   const {webhook} = req.body
 
   const user = await scheduleTimeman(webhook)
 
-  res.status(200).json(user)
+  return res.status(200).json(user)
 })
 
 app.listen(constants.PORT, () => console.log(`Timeman wake up on port ${constants.PORT} 🕰`))
