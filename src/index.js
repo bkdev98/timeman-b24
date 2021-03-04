@@ -54,7 +54,7 @@ app.get('/', (req, res) => {
   return res.status(200).json("Timeman 🕰")
 })
 
-app.get('/api/status', async (req, res) => {
+app.post('/api/status', async (req, res) => {
   const {webhook} = req.body
 
   try {
